@@ -23,14 +23,16 @@ func main() {
 	SetUpDiscordBot()
 
 	app.POST("/send", func(c *gin.Context) {
-		msg := c.Query("message")
+		msg := c.PostForm("message")
+		tag := c.PostForm("tag")
+		channelId := c.PostForm("channel_id")
 
-		if c.Query("tag") != "" {
-			msg = "[" + c.Query("tag") + "] " + msg
+		if tag != "" {
+			msg = "[" + tag + "] " + msg
 		}
 
-		if c.Query("channel_id") != "" {
-			Send(c.Query("channel_id"), msg)
+		if channelId != "" {
+			Send(channelId, msg)
 			c.AbortWithStatus(200)
 			return
 		} else {
